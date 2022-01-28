@@ -1,101 +1,130 @@
-/*********************FUNCTIONS AND DATA FOR TASK 1 AND 2*******************************/ 
+// const person1 = { id: 123, name: 'Moshe', address: { city: 'Lod', street: 'Sokolov' } };
+// const person2 = { id: 123, name: 'Moshe', address: { city: 'Lod', street: 'Sokolov' } };
+// const person3 = person1;
 
-let myForEach = function(array, callback) {  
+// console.log(`"123" == 123 is ${"123" == 123}`);
+// console.log(`"123" === 123 is ${"123" === 123}`);
+// console.log(`person1 === person3 is ${person1 === person3}`)
+// console.log(`person1 === person2 is ${person1 === person2}`)
+// console.log(`JSON.stringify(person1) === JSON.stringify(person2) is ${JSON.stringify(person1) ===
+//         JSON.stringify(person2)}`);
+// console.log(JSON.stringify(person1));
+// console.log(person1.toString());
+// console.log(`name of person1 is ${person1.name}`)
+// console.log(`person1 lives in city ${person1.address.city}`);
+// Object.keys(person1).forEach(k => console.log(k)) //array of the object keys
+// Object.values(person1).forEach(v => console.log(v)); //array of the object values
+// Object.entries(person1).forEach(e => console.log(e)); //array of arrays - [key, value]
+// console.log(Object.entries(person1));
+// function createAddress(city, street) {
+//         //{city: city, street: street} <=> {city, street}
+//         return {city, street}
+// }
+// function createPerson(id, name, address) {
+//         return {id, name, address};
+// }
+// const persons = [
+//         createPerson(123, "Vasya", createAddress("Rehovot","Parshani")),
+//         createPerson(124, "Olya", createAddress("Rehovot","Pr. Plaut")),
+//         createPerson(125, "Tolya", createAddress("Tel-Aviv","Dizengoff")),
+//         createPerson(126, "Sara", createAddress('Lod', 'Sokolov'))
+// ]
+/**************************************HW 14 definition task3 */ 
+
+//TODO write function getPersonsCity(persons, city) , taking array of the persons and a city (see the branch js-objects ) and returning array of the persons living in the given city. For example, find persons living in Rehovot 
+
+// Input: const persons = [ 
+
+//         createPerson(123, "Vasya", createAddress("Rehovot","Parshani")), 
+
+//         createPerson(124, "Olya", createAddress("Rehovot","Pr. Plaut")), 
+
+//         createPerson(125, "Tolya", createAddress("Tel-Aviv","Dizengoff")), 
+
+//         createPerson(126, "Sara", createAddress('Lod', 'Sokolov')) 
+
+// ] 
+
+// Output: getPersonsCity(persons, ‘Rehovot’) => [ 
+
+//         {id: 123, name: "Vasya", address:{city: "Rehovot",street: "Parshani")), 
+
+//         {id: 124, name: "Olya", address:{city: "Rehovot",street: "Pr. Plaut")) 
+
+// ] 
+
+ 
+ 
+
+/****************************************HW 14 definition task4 */ 
+
+//TODO write function movePersonsNoCityAtBeginning(persons, city) taking array of the persons and a city (see the branch js-objects ) and returning new array with all persons not living in the given city moved at beginning; 
+
+// 
+/************************************************ */
+
+/*************************************************HW 14 solutions */
+//task 3
+// function getPersonsCity(persons, city) {
+//         return persons.filter(p => p.address.city === city);
+// }
+// console.log(getPersonsCity(persons, 'Rehovot'));
+//task 4
+// function movePersonsNoCityAtBeginning(persons, city) {
+//         const personsRes = getPersonsCity(persons, city);
+//         personsRes.unshift(...persons.filter(p => p.address.city !== city));
+//         return personsRes;
+// }
+// console.log(movePersonsNoCityAtBeginning(persons,  'Rehovot'));
+/****************************cw #15 */
+//input: ["lmn", "d", "d", "lmn", "a", "lmn", "a", "bc"]
+//output: lmn -> 3
+//        a -> 2
+//        d -> 2
+//        bc -> 1
+function displayOccurrences(array) {
+  //creating object with key - unique element of array (string as an element of array)
+  //                     value - occurrences count
+  //difference between  obj ={a: 123, d: "abc"}; const a = "d" ; obj.a === 123,
+  // and obj[a] === "abc"
+  //obj.c = 10 -> {a: 123, d: "abc", c: 10}
+  const res = {};
   for (let i = 0; i < array.length; i++) {
-    callback(array[i], i, array);
+          if (res[array[i]] === undefined) {
+                  //string as content of array[i] occures first time
+                  res[array[i]] = 1;
+          } else {
+                  res[array[i]] = res[array[i]] + 1;
+          }
   }
-}; // Common function for task 1 and 2
+  // console.log(res) -> intermediate debug log
+  Object.entries(res).sort((e1, e2) => {
+          const res = e2[1] - e1[1];
+          return res === 0 ? e1[0].localeCompare(e2[0]) :  res;
+  }).forEach(e => console.log(`${e[0]} -> ${e[1]}`))
 
-const arrEx1 = [1, 2, 3, 4, 5, 6, 7]; // Array for test task 1
-const arrEx2 = [7, 6, 5, 10, 3, 12, 1]; // Array for test task 2
 
-/**************************************TASK 1*******************************************/
-
-console.log(`\nTask 1\n`);
-
-let myFilter = function(array, callback){
-  const res = [];
-  function forEachCall(n, i, a) {
-      if (callback(n, i, a) == true)
-      res.push(n);
-  }
-  myForEach(array, forEachCall);
-  return res;
 }
+const ar = ["bc", "lmn", "d", "d", "lmn", "a", "lmn", "a"];
+displayOccurrences(ar);
+/**********************************************HW #15 task1 */
+//refactoring of displayOccurrences function from the classwork #15
+//lines 92 - 99 should be a separated function
+//that separated function should apply standard methods like reduce
 
-const ar = myFilter(arrEx1, (n, _i, a) => a.length % 2 == 0 ? n % 2 == 0 : n % 2 == 1); //Test
-const ar1 = myFilter(arrEx1, (n, _i, a) => Math.pow(n, 2) - a.length > 0); //Test
-console.log(`Test for ar:`, ar);
-console.log(`Test for ar1:`, ar1);
+/**********************************************************HW #15 task2 */
+// write useful function countBy(array, callbackFun) that returns object
+// with keys as grouping criteria  and values as the occurrence counts
 
-/**************************************TASK 2*******************************************/
-
-console.log(`\nTask 2\n`);
-
-let myReduce = function(array, callback, initialResult){
-  let res;
-  initialResult == undefined ? initialResult = array[0] : res = initialResult;
-  function forEachCall(n, i, a) {
-      res = callback(initialResult, n, i, a);
-      initialResult = res;
-  }
-  myForEach(array, forEachCall);
-  return res;
-}
-const max = myReduce(arrEx2, (max, cur)=>cur > max ? cur : max); //Test
-let sum = myReduce(arrEx2, (sum, cur) => sum + cur, 0); //Test
-console.log(`Test for max:`, max);
-console.log(`Test for sum:`, sum);
-
-/*********************FUNCTIONS AND DATA FOR TASK 3 AND 4*******************************/ 
-
-function createAddress(city, street) {
-  return {city, street}
-}
-function createPerson(id, name, address) {
-  return {id, name, address};
-}
-const persons = [
-  createPerson(123, "Vasya", createAddress("Rehovot","Parshani")),
-  createPerson(124, "Olya", createAddress("Rehovot","Pr. Plaut")),
-  createPerson(125, "Tolya", createAddress("Tel-Aviv","Dizengoff")),
-  createPerson(126, "Sara", createAddress('Lod', 'Sokolov'))
-]
-/**************************************TASK 3*******************************************/
-
-console.log(`\nTask 3\n`);
-
-function getPersonsCity(persons, city) {
-  // Create new array of persons by chosen city only
-  // First way
-  const res = [];
-  persons.forEach((p, i) => {
-  if (persons[i].address.city === city)
-  res.push(JSON.stringify(p))
-  });
-  // Second way
-  // const res = persons.filter((_n, i, _a) => persons[i].address.city === city);
-  return res;
-}
-const res1 = getPersonsCity(persons, "Rehovot"); //Test
-const res2 = getPersonsCity(persons, "Lod"); //Test
-
-console.log(res1);
-console.log(`Test for res2:`, res2);
-
-/**************************************TASK 4*******************************************/
-
-console.log(`\nTask 4\n`);
-
-function movePersonsNoCityAtBeginning(persons, city) {
-  // Create and sort new array of persons by the city (persons with chosen city in the end)
-  const res = [];
-  persons.forEach((p, i) => {
-  persons[i].address.city !== city ? res.unshift(JSON.stringify(p)) : res.push(JSON.stringify(p))
-  });
-  return res; 
-}
-const res3 = movePersonsNoCityAtBeginning(persons, "Rehovot"); //Test
-const res4 = movePersonsNoCityAtBeginning(persons, "Lod"); //Test
-console.log(`Test for res3:`, res3);
-console.log(`Test for res4:`, res4);
+//where array - any array, callbackFun - function returning grouping criteria
+//examples:
+// const arr = [6.4, 7.3, 6.5, 6.9];
+//const statistics = countBy(arr, element => Math.floor(element))
+//result: statistics -> {"6": 3, "7":1}
+// const arr = ['abcd', 'lmnr', 'ab', 'dddd'];
+//const statistics = countBy(arr, element => element.length)
+//result: statistics -> {"4": 3, "2":1}
+//const arr = [{age: 25, id: 123, name: 'Vasya'},{age: 50, id: 123, name: 'Vasya'},
+// {age: 25, id: 123, name: 'Vasya'},{age: 70, id: 123, name: 'Vasya'}  ]
+//const statistics = countBy(arr, element -> element.age)
+//result statistics -> {"25":2, "50":1, "70":1}
