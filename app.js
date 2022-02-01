@@ -1,76 +1,74 @@
-const circle = {radius: 20, square: function() {
-  return 3.14 * (this.radius ** 2)
-}, perimeter: () => 2 * 3.14 * this.radius,
-toString: function(){
-  return `radious of this circle is ${this.radius}`
-}};
-console.log(`square=${circle.square()}, perimeter=${circle.perimeter()}`); 
-//circle.square will be converted to square(circle) where circle as argument value,
-// "this" is the hidden parameter in the function 
-// in any arrow function there is no "this"
-function square(circle) {
-  return 3.14 * (circle.radius ** 2);
+/*********************************** Task 1 ***************************************/
+console.log(`\nTask 1:\n`);
+
+function Deferred(){
+  this.res;
+  this.arr = [];
 }
-console.log(`circle: ${circle}`)
-const circle1 = {radius: 20,  perimeter: function() {
-          return 2 * 3.14 * this.radius}
-  ,
-  toString: function(){
-          return `radious of this circle is ${this.radius}`
-  }};
-  //circle1.square(); error because the method square is not defined inside object circle1
-  function Circle(radius) {
-          this.radius = radius;
-  }
-  Circle.prototype.square = function() {
-          return 3.14 * (this.radius ** 2);  
-  }
-  Circle.prototype.perimeter = function() {
-          return 2 * 3.14 * this.radius
-  }
-  Circle.prototype.toString = function() {
-          return `radius of this circle is ${this.radius}`
-  }
-  const circle10 = new Circle(10);
-  /*******************************************************HW #16 definition task 1 */
-//Write constructor Deferred
-  //         const d = new Deferred()
-// d.then(function(res){ console.log('1 ', res); return 'a'; });
-
-// d.then(function(res){ console.log('2 ', res); return 'b'; });
-
-// d.then(function(res){ console.log('3 ', res); return 'c'; });
-// d.resolve('hello');
-//Output: 
-//1 hello
-//2 a
-//3 b
-/********************************************************* */
-/*******************************************HW #16 definition task2 */
-//write constructor MyArray
-//const myArray = new MyArray(10);
-//myArray.get(index) - result 10
-//write method get getting an index value and returning common value
-// (set in constructor)
-//myArray.set(index, value); 
-//write method set that sets a given value at a given index
-//myArray.setValue(value) - sets new value in all elements of myArray
-//Example:
-// const myArray = new MyArray(10);
-// console.log(myArray.get(100)) // displayed out 10
-// myArray.set(100, 500)//sets 500 at index 100
-// console.log(myArray.get(200)) //displayed out 10
-// console.log(myArray.get(100)) //displayed out 500
-// myArray.setValue(300);
-// console.log(myArray.get(100)) //displayed out 300
-// console.log(myArray.get(200)) //displayed out 300
-
-/***************************************************************************** */
-Array.prototype.filter = function(callbackPredicate) {
-  console.log('Tel-Ran copyright')
-  const res = []
- this.forEach((n, i, a) => callbackPredicate(n, i, a) && res.push(n));
- return res;
+Deferred.prototype.then = function(el) {
+  this.arr.push(el);
 }
-const ar = [1, 2, 4, 5, 100];
-ar.filter(n => n % 2 !== 0).forEach(n => console.log(n));
+Deferred.prototype.resolve = function(value) {
+  this.res = value;
+  for (let i = 0; i < this.arr.length; i++) {
+      this.res = this.arr[i](this.res);
+  }
+}
+
+const d = new Deferred();
+d.then(function(res){ console.log('1 ', res); return 'a'; });
+d.then(function(res){ console.log('2 ', res); return 'b'; });
+d.then(function(res){ console.log('3 ', res); return 'c'; });
+d.resolve('hello');
+
+/*********************************** Task 2 ***************************************/
+console.log(`\nTask 2:\n`)
+
+function MyArray(n){
+  this.arr = [];
+  this.defaultValue = n;
+}
+// Fill empty elements of array with default value
+MyArray.prototype.fillEmpty = function(){ 
+  for (let i = 0; i < this.arr.length; i++) {
+    this.arr[i] === undefined ? this.arr[i] = this.defaultValue : this.arr[i]
+  }
+}
+// Check if parameter "inedex" is bigger than length of array. If yes, sets new length of the array.
+MyArray.prototype.checkIndex = function(index){ 
+  index > this.arr.length ? this.arr.length += index - this.arr.length + 1 : this.arr.length;
+}
+MyArray.prototype.get = function(index) {
+  this.checkIndex(index);
+  this.fillEmpty();
+  return this.arr[index];
+}
+MyArray.prototype.set = function(index, value) {
+  this.checkIndex(index);
+  this.arr[index] = value;
+  this.fillEmpty();
+}
+MyArray.prototype.setValue = function(value) {
+  for (let i = 0; i < this.arr.length; i++) {
+      this.arr[i] = value;
+  }
+}
+MyArray.prototype.toString = function() {
+  return JSON.stringify(this.arr);
+}
+
+const myArray = new MyArray(7);
+
+console.log(`Array[10] = ${myArray.get(10)}`) // displayed out 7
+myArray.set(5, 66)//sets 66 at index 5
+console.log(myArray.toString());
+
+console.log(`Array[5] = ${myArray.get(5)}`) //displayed out 66
+myArray.setValue(300);
+console.log(myArray.toString());
+
+console.log(`Array[8] = ${myArray.get(8)}`) //displayed out 300
+myArray.setValue(1);
+console.log(`Array[0] = ${myArray.get(0)}`) //displayed out 1
+myArray.set(15, 99)
+console.log(myArray.toString());
