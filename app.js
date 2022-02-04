@@ -78,7 +78,26 @@ function countOfPersonType(persons, type) {
   //return count of persons of the given type
   //Example:
   //countOfPersonType(persons, 'WageEmployee') ---> 1
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function computeSalaryBudget(persons) {
   //returns total salary of all employee objects in the given array
   //Example:
