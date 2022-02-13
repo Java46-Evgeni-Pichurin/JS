@@ -18,8 +18,7 @@ console.log(`Array with random numbers from 0 to 5: `, randArr);
 console.log(`\nTask 2\n`);
 
 function concatinate(prefix) {
-const string = "" + prefix;
-return newString => string + newString ;
+return newString => prefix + newString ;
 }
 /**************************************Task 2 - test***************************************/
 const concatApp = concatinate('App-');
@@ -28,4 +27,6 @@ console.log(`Test cancatination of strings => ${concatMessage}`);
 
 const firstString = concatinate(`Hello `);
 const secondString = firstString(`World`);
-console.log(`Test cancatination of strings => ${secondString}`);
+const thirdString = concatinate(secondString);
+const fourthString = thirdString(` I"m here!!!`)
+console.log(`Test cancatination of strings => ${fourthString}`);
